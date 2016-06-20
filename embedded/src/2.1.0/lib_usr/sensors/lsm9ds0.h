@@ -14,6 +14,8 @@ struct sLSM9DS0IMU
 	i16 gx_ofs, gy_ofs, gz_ofs;
 	i16 gx_comp, gy_comp, gz_comp;
 
+	i32 roll, pitch, yaw;
+
 	i16 temp;
 };
 

@@ -31,7 +31,6 @@ struct sRGBSensor
 	i16 r_color_normalised[RGB_SENSORS_COUNT];
 	i16 g_color_normalised[RGB_SENSORS_COUNT];
 	i16 b_color_normalised[RGB_SENSORS_COUNT];
-
 };
 
 

@@ -8,6 +8,7 @@
 #include "common/pid.h"           /*pid controller*/
 
 #include "interfaces/esp8266.h"   /*wifi driver*/
+#include "interfaces/tcp_data.h"   /*telemetry via TCP*/
 #include "interfaces/sh1106.h"    /*lcd display driver*/
 
 #include "sensors/lsm9ds0.h"      /*IMU*/

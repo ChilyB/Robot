@@ -1,4 +1,4 @@
-SUBDIRS = common server visualisation null_bot prey_bot hunter_bot line ant_bot
+SUBDIRS = common server visualisation null_bot prey_bot hunter_bot line ant_bot debug_server
 
 all: $(SUBDIRS)
 

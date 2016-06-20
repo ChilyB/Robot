@@ -152,7 +152,7 @@ i32 esp8266_connect(char *ip, u32 port, char *tx_buffer, u32 tx_buffer_length, c
 	if (esp8266_state != ST_CONNECTED)
 	{
 		esp8266_send((char*)"AT+CIPCLOSE\r\n");
-		timer_delay_ms(10);
+		timer_delay_ms(100);
 
 		esp8266_send((char*)"AT+CIPSTART=\"TCP\",\"");
 		esp8266_send((char*)ip);
@@ -177,7 +177,7 @@ i32 esp8266_connect(char *ip, u32 port, char *tx_buffer, u32 tx_buffer_length, c
 	if (esp8266_find_stream((char*)">", 1, 1000) == 0)
 	{
 		esp8266_send((char*)"AT+CIPCLOSE\r\n");
-		timer_delay_ms(10);
+		timer_delay_ms(100);
 		esp8266_state = ST_NO_CONNECTED;
 		return ESP8266_SERVER_CONNECTING_ERROR2;
 	}
@@ -189,15 +189,15 @@ i32 esp8266_connect(char *ip, u32 port, char *tx_buffer, u32 tx_buffer_length, c
 	if (esp8266_find_stream((char*)"SEND OK", 7, 1000) == 0)
 	{
 		esp8266_send((char*)"AT+CIPCLOSE\r\n");
-		timer_delay_ms(10);
+		timer_delay_ms(100);
 		esp8266_state = ST_NO_CONNECTED;
 		return ESP8266_SERVER_SENDING_ERROR;
 	}
 
-	if (esp8266_find_stream((char*)"+IPD,", 5, 800) == 0)
+	if (esp8266_find_stream((char*)"+IPD,", 5, 1000) == 0)
 	{
 		esp8266_send((char*)"AT+CIPCLOSE\r\n");
-		timer_delay_ms(10);
+		timer_delay_ms(100);
 		esp8266_state = ST_NO_CONNECTED;
 		return ESP8266_SERVER_RESPONSE_ERROR;
 	}
@@ -207,11 +207,42 @@ i32 esp8266_connect(char *ip, u32 port, char *tx_buffer, u32 tx_buffer_length, c
 	while ((c = uart_read()) != ':')
 		count = 10*count + (c - '0');
 
-	esp8266_get_nonblocking(rx_buffer, rx_buffer_length, 800);
+	esp8266_get_nonblocking(rx_buffer, rx_buffer_length, 20);
 
 
 	return (count);
 }
+
+
+char tx_buffer[128];
+char rx_buffer[128];
+
+void client_test()
+{
+	esp8266_init(0);
+
+
+	while (1)
+	{
+		u32 i;
+		for (i = 0; i < sizeof(tx_buffer); i++)
+			tx_buffer[i] = 0;
+
+		tx_buffer[0] = 'H';
+		tx_buffer[1] = 'e';
+		tx_buffer[2] = 'l';
+		tx_buffer[3] = 'l';
+		tx_buffer[4] = 'O';
+		tx_buffer[5] = '1';
+		tx_buffer[6] = '2';
+		tx_buffer[7] = '3';
+		tx_buffer[8] = '4';
+
+		esp8266_connect(WIFI_SERVER_IP, WIFI_TERMINAL_PORT, tx_buffer, sizeof(tx_buffer), rx_buffer, sizeof(rx_buffer));
+		timer_delay_ms(100);
+	}
+}
+
 /*
 u32 server_loop(char *buf, u32 buf_length)
 {

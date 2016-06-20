@@ -23,11 +23,11 @@ cd hunter_bot/bin
 cd ../..
 
 cd line/bin
-# ./main.elf &
+ ./main.elf &
 cd ../..
 
 cd ant_bot/bin
- ./main.elf &
+# ./main.elf &
 cd ../..
 
 

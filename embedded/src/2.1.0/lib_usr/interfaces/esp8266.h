@@ -15,21 +15,9 @@
 #define ESP8266_NO_CONNECTED_CLIENT             ((i32)-7)
 #define ESP8266_SERVER_DATA_SENDING_ERROR       ((i32)-8)
 
-
-/*
-AT+RST
-AT+CIPMUX=0
-AT+CWMODE=1
-AT+CWJAP="NETGEAR83","melodichill546"
-*/
-
-/*
-//server mode
-AT+CIPMUX=1
-AT+CIPSERVER=1,80
-AT+CIFSR    //check IP
-*/
-
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 
 i32 esp8266_init(u32 server_mode);
@@ -38,5 +26,11 @@ i32 esp8266_connect(char *ip, u32 port, char *tx_buffer, u32 tx_buffer_length, c
 i32 server_loop(char *buf, u32 buf_length);
 
 void server_test();
+void client_test();
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

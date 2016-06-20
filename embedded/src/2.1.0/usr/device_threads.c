@@ -115,19 +115,12 @@ void device_rgb_sensors_thread()
 }
 
 
-#define RX_BUFFER_LENGTH 	128
-
-char tx_buffer[] = "aeris robot esp8266 message";
-char rx_buffer[RX_BUFFER_LENGTH];
 
 
 void device_wifi_thread()
 {
 	u32 state = 0;
 	u32 init_res;
-
-	u32 tx_buffer_length = strlen_(tx_buffer);
-
 
 	while (1)
 	{
@@ -136,6 +129,7 @@ void device_wifi_thread()
 			//init state
 			case 0:
 				led_on(WIFI_RST);
+				tcp_init();
 				init_res = esp8266_init(0);
 				if (init_res != ESP8266_SUCCESS)
 				{
@@ -150,11 +144,21 @@ void device_wifi_thread()
 
 			//common mode
 			case 1:
+				/*
 				esp8266_connect(WIFI_SERVER_IP, WIFI_TERMINAL_PORT,
 				                tx_buffer,
 				                tx_buffer_length,
 				                rx_buffer,
 				                RX_BUFFER_LENGTH);
+					*/
+
+					tcp_terminal_puts("string aeris message\0");
+					tcp_send();
+					timer_delay_ms(100);
+
+					tcp_terminal_puts("testing string BBBBBBBB34\0");
+					tcp_send();
+					timer_delay_ms(100);
 
 			// if (device_sleep_flag)
 				//	state = 2;
