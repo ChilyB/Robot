@@ -149,6 +149,9 @@ void line_follower_test(u32 line_color)
 	float base_speed = 0;
 	float base_speed_max = 20;
 
+	int i;
+	int border_resume_delay = 0;
+
 	float Ks = 0.2;
 
 	float error = 0.0;
@@ -162,6 +165,21 @@ void line_follower_test(u32 line_color)
 	while (1)
 	{
 		rgb_get_line_position();
+
+		if (g_line_position.white_on_line != 0)
+		{
+			g_motors.left = 0;
+			g_motors.right = 0;
+			border_resume_delay = 100;
+		}
+
+
+		if (border_resume_delay > 0)
+		{
+			border_resume_delay -= 1;
+			timer_delay_ms(dt);
+			continue;
+		}
 
 		switch (line_color)
 		{
