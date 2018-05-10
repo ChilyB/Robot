@@ -69,6 +69,78 @@ void device_i2c_thread()
  	}
 }
 
+void device_adc_bat_sensor_thread(){
+	u32 state = 0;
+	u32 init_res;
+
+	event_timer_set_period(EVENT_TIMER_0_ID, ADC_SAMPLIG_PERIOD);
+
+
+	u8 calibrate = 1;
+	while (1)
+	{
+		switch (state)
+		{
+			//init state
+			case 0:
+				
+
+				state = 1;
+				break;
+
+			//common reading mode
+			case 1:
+				
+				if (device_sleep_flag)
+					state = 2;
+				break;
+			//sleep mode
+			case 2:
+
+				if (device_sleep_flag == 0)
+					state = 0;
+				break;
+		}
+ 	}
+	
+}
+void device_i2c_adc_sensor_thread(){
+	u32 state = 0;
+	u32 init_res;
+
+	event_timer_set_period(EVENT_TIMER_0_ID, I2C_SAMPLIG_PERIOD);
+
+
+	u8 calibrate = 1;
+	while (1)
+	{
+		switch (state)
+		{
+			//init state
+			case 0:
+				
+
+				state = 1;
+				break;
+
+			//common reading mode
+			case 1:
+				
+				if (device_sleep_flag)
+					state = 2;
+				break;
+			//sleep mode
+			case 2:
+
+				if (device_sleep_flag == 0)
+					state = 0;
+				break;
+				
+		}
+ 	}
+	
+}
+
 void device_rgb_sensors_thread()
 {
 	u32 state = 0;
@@ -139,6 +211,8 @@ void device_wifi_thread()
 
 				timer_delay_ms(100);
 
+				
+
 				state = 1;
 				break;
 
@@ -151,14 +225,14 @@ void device_wifi_thread()
 				                rx_buffer,
 				                RX_BUFFER_LENGTH);
 					*/
-
-					tcp_terminal_puts("string aeris message\0");
+				
+					/*tcp_terminal_puts("string aeris message\0");
 					tcp_send();
 					timer_delay_ms(100);
 
 					tcp_terminal_puts("testing string BBBBBBBB34\0");
 					tcp_send();
-					timer_delay_ms(100);
+					timer_delay_ms(100);*/
 
 			// if (device_sleep_flag)
 				//	state = 2;

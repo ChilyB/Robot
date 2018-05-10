@@ -25,6 +25,8 @@ void esp8266_uninit();
 i32 esp8266_connect(char *ip, u32 port, char *tx_buffer, u32 tx_buffer_length, char *rx_buffer, u32 rx_buffer_length);
 i32 server_loop(char *buf, u32 buf_length);
 
+i32 charging_send_message(char *ip, u32 port, char *tx_buffer, u32 tx_buffer_length, char *rx_buffer, u32 rx_buffer_length);
+
 void server_test();
 void client_test();
 

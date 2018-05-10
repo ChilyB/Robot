@@ -16,7 +16,7 @@
 
 void adc_init()
 {
-	/*
+	
 	ADC_InitTypeDef       ADC_InitStructure;
     GPIO_InitTypeDef      GPIO_InitStructure;
 
@@ -26,8 +26,8 @@ void adc_init()
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AN;
     GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL ;
     GPIO_Init( GPIOA, &GPIO_InitStructure );
-    GPIO_InitStructure.GPIO_Pin = 	ADC8_CH;
-    GPIO_Init( GPIOB, &GPIO_InitStructure );
+    //GPIO_InitStructure.GPIO_Pin = 	ADC8_CH;
+    //GPIO_Init( GPIOB, &GPIO_InitStructure );
 
 
 
@@ -37,8 +37,8 @@ void adc_init()
     RCC_ADCCLKConfig(RCC_ADC12PLLCLK_Div2);
     RCC_AHBPeriphClockCmd(RCC_AHBPeriph_ADC12, ENABLE);
 
-    RCC_ADCCLKConfig(RCC_ADC34PLLCLK_Div2);
-    RCC_AHBPeriphClockCmd(RCC_AHBPeriph_ADC34, ENABLE);
+    //RCC_ADCCLKConfig(RCC_ADC34PLLCLK_Div2);
+    //RCC_AHBPeriphClockCmd(RCC_AHBPeriph_ADC34, ENABLE);
 
     ADC_InitStructure.ADC_AutoInjMode = ADC_AutoInjec_Disable;
     ADC_InitStructure.ADC_ContinuousConvMode = ADC_ContinuousConvMode_Disable;
@@ -50,19 +50,19 @@ void adc_init()
     ADC_InitStructure.ADC_Resolution = ADC_Resolution_12b;
 
     ADC_Init(ADC1, &ADC_InitStructure);
-    ADC_Init(ADC2, &ADC_InitStructure);
-    ADC_Init(ADC3, &ADC_InitStructure);
+    //ADC_Init(ADC2, &ADC_InitStructure);
+    //ADC_Init(ADC3, &ADC_InitStructure);
 
-
-    ADC_RegularChannelConfig(ADC1, ADC_Channel_1, 1,  ADC_SampleTime_1Cycles5);
-    ADC_RegularChannelConfig(ADC2, ADC_Channel_1, 1,  ADC_SampleTime_1Cycles5);
-    ADC_RegularChannelConfig(ADC3, ADC_Channel_13, 1,  ADC_SampleTime_1Cycles5);
+    ADC_RegularChannelConfig(ADC1, ADC_Channel_2, 1,  ADC_SampleTime_1Cycles5);
+    //ADC_RegularChannelConfig(ADC1, ADC_Channel_1, 1,  ADC_SampleTime_1Cycles5);
+    //ADC_RegularChannelConfig(ADC2, ADC_Channel_1, 1,  ADC_SampleTime_1Cycles5);
+    //ADC_RegularChannelConfig(ADC3, ADC_Channel_13, 1,  ADC_SampleTime_1Cycles5);
 
 
     ADC_Cmd(ADC1, ENABLE);
-    ADC_Cmd(ADC2, ENABLE);
-    ADC_Cmd(ADC3, ENABLE);
-		*/
+    //ADC_Cmd(ADC2, ENABLE);
+    //ADC_Cmd(ADC3, ENABLE);
+		
 }
 
 

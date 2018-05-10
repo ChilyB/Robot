@@ -14,8 +14,13 @@ struct sMotors
 
 volatile struct sMotors g_motors;
 
-#define DRV8830_LEFT_ADDRESS		0xC0
-#define DRV8830_RIGHT_ADDRESS	 0xC2
+//rev3 + magic soldering jumper
+#define DRV8830_LEFT_ADDRESS		0xC2
+#define DRV8830_RIGHT_ADDRESS	 0xC6
+
+//rev1+2
+//#define DRV8830_LEFT_ADDRESS		0xC0
+//#define DRV8830_RIGHT_ADDRESS	 0xC2
 
 #define DRV8830_CONTROL_REG		 0x00
 #define DRV8830_FAULT_REG			 0x01

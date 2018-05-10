@@ -14,6 +14,9 @@
 #include "sensors/lsm9ds0.h"      /*IMU*/
 #include "sensors/rgb_sensor.h"   /*surface rgb sensor*/
 
+#include "sensors/bat_adc.h"
+#include "sensors/adc_i2c.h"
+
 #include "motors/motors.h"
 
 #endif

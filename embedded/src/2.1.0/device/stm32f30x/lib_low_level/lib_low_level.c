@@ -26,6 +26,6 @@ void lib_low_level_init()
 	#endif
 
 	#ifdef _ADC_H_
-	// adc_init();
+	adc_init();
 	#endif
 }

@@ -6,8 +6,8 @@
 //#define UART_BAUD_RATE    9600
 //#define UART_BAUD_RATE 		57600
 
-#define UART_BAUD_RATE 		115200
-
+//#define UART_BAUD_RATE 		115200
+#define UART_BAUD_RATE 		9600
 
 void uart_write(char c);
 char uart_read();

@@ -14,10 +14,13 @@ void main_thread()
 	create_thread(device_i2c_thread, device_i2c_thread_stack, sizeof(device_i2c_thread_stack), PRIORITY_MAX);
 	create_thread(device_wifi_thread, device_wifi_thread_stack, sizeof(device_wifi_thread_stack), PRIORITY_MAX);
 
+	//create_thread(device...)
+	//create_thread(device...)
+
 	timer_delay_ms(200); //practical to gyro setup wait
 
 	rgb_set_background();
-
+	
 	while (1)
 	{
 		while (get_key() == 0)
@@ -41,9 +44,28 @@ void main_thread()
 		//imu_test();
 		//go_forward_test();
 		//rotation_test();
+		/*while(1){
+			batADC_test();
+			i2cADC_test();
+		}*/
+		
+		//charging_test_go_straight_until_line(LINE_RED);
+		
+		//line_follower_test(LINE_RED);
+		//charging_wifi_test();
+		line_follower_with_charging(LINE_RED, LINE_RED,5000,4200,5000);
+		/*charging_test_go_straight_until_line(LINE_RED);
+		if(g_rgb.r[3] > RGB_RED_LINE_TRESHOLD){
+			//line_up_to_color(LINE_RED);
+			slightTurn(1000,20,LEFT_SIDE);	
+			charging_test_go_straight_until_line(LINE_RED);
+		}
+		
+		line_follower_until_color(LINE_RED,LINE_WHITE);*/
+		//line_up_to_color(LINE_WHITE);
+		//rotation_test();
+		//rotate_angle(10, NULL);
 
-
-		line_follower_test(LINE_RED);
 		//line_follower_test(LINE_GREEN);
 		//line_follower_test(LINE_BLUE);
 		//your code here

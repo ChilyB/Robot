@@ -21,7 +21,7 @@ u32 rgb_sensor_init()
 		g_rgb.b_color_normalised[i] = 0;
 	}
 
-	led_on(LED_W);
+	//led_on(LED_W);
 
 	rgb_i2c_init();
 
