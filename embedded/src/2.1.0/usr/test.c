@@ -149,7 +149,7 @@ void i2cADC_test(){
 	timer_delay_ms(1000);
 }
 void batADC_test(){
-	uint32_t ret = getBatteryVoltage();
+	uint32_t ret = getBatteryVoltage(100);
 	esp8266_send((char*)"\r\nADC_BAT:");
 	esp8266_send_uint(ret);
 	timer_delay_ms(1000);
@@ -342,21 +342,110 @@ void line_follower_until_color(u32 line_color,u32 end_color){
 
 void line_follower_with_charging(u32 line_color,u32 charging_line_color,uint32_t low_battery_V, uint32_t high_battery_V,uint32_t charger_V){
 	char charging_flag = 0;
+	int charge_count = 0;
+	int test_count =0;
+	uint32_t test_sum =0;
+	uint32_t volt = 0;
+	//parametre start
+	u32 dt = 10;
+
+	float base_speed = 0;
+	float base_speed_max = 20;
+
+	int i;
+	int border_resume_delay = 0;
+
+	float Ks = 0.2;
+
+	float error = 0.0;
+	float error_prev = 0.0;
+
+	float Kp = 40.0;
+	float Kd = 100.0;
+	//parametre end
 
 		while(1){
 			if(charging_flag == 0){
-				
-				//štandardny program
+				//štandardny program start
+					rgb_get_line_position();
 
+					if (g_line_position.white_on_line != 0)
+					{
+						g_motors.left = 0;
+						g_motors.right = 0;
+						border_resume_delay = 100;
+
+
+					}
+
+
+					if (border_resume_delay > 0)
+					{
+						border_resume_delay -= 1;
+						timer_delay_ms(dt);
+						continue;
+					}
+
+					switch (line_color)
+					{
+						case LINE_WHITE: error = 0.0 - g_line_position.white/70.0; break;
+						case LINE_RED: error = 0.0 - g_line_position.red/70.0; break;
+						case LINE_GREEN: error = 0.0 - g_line_position.green/70.0; break;
+						case LINE_BLUE: error = 0.0 - g_line_position.blue/70.0; break;
+					}
+
+
+					if (error > 1.0)
+						error = 1.0;
+
+					if (error < -1.0)
+						error = -1.0;
+
+					float dif_speed = Kp*error + Kd*(error - error_prev);
+					error_prev = error;
+
+					base_speed = m_min(base_speed_max*(1.0-m_abs(error)), base_speed + Ks);
+
+					//g_motors.left = base_speed - dif_speed;;
+					//g_motors.right = base_speed + dif_speed;;
+					g_motors.left = base_speed + dif_speed;;
+					g_motors.right = base_speed - dif_speed;
+
+
+					timer_delay_ms(dt);
+				
+				////štandardny program end
 			}
 		switch(charging_flag){
 			case 0:
-				if(getBatteryVoltage() < low_battery_V){
-					charging_flag=1;
+			
+			volt = getBatteryVoltage(100);
+			test_sum+=volt;
+				if(volt < low_battery_V){
+					if(charge_count > 1000){
+						charging_flag=1;
+						g_motors.left=0;
+						g_motors.right=0;
+					}
+					charge_count++;
+					
+				}else{
+					if(charge_count >0){
+						charge_count--;
+					}
+					
 				}
-				g_motors.left=0;
-				g_motors.right=0;
-
+				/*test_count++;
+				if(test_count == 500){
+					esp8266_send_uint(test_sum/test_count);
+					esp8266_send("\r\n");
+					test_count = 0;
+					test_sum=0;
+				}*/
+				//timer_delay_ms(1000);
+				//esp8266_send_uint(getBatteryVoltage());
+				//esp8266_send("\r\n");
+				
 			break;
 			case 1:
 				rx_buffer[0]=0;
@@ -414,13 +503,14 @@ void line_follower_with_charging(u32 line_color,u32 charging_line_color,uint32_t
 				
 			break;
 			case 6:
-			if(getBatteryVoltage() > high_battery_V){
+			if(getBatteryVoltage(100) > high_battery_V){
 				charging_flag=0;
 				g_motors.left = -10;
 				g_motors.right = -10;
-				timer_delay_ms(3000);
+				timer_delay_ms(4000);
 				g_motors.left = 0;
 				g_motors.right = 0;
+				charge_count = 0;
 			}
 			break;
 

@@ -2,9 +2,9 @@
 
 #include "stm32f30x_adc.h"
 #include "../stm32f30x_rcc.h"
-
+/*
 #define ADC0_CH 	((u32)0)		//ADC1_IN1
-#define ADC1_CH 	((u32)1)		//ADC1_IN2
+#define ADC1_CH 	((u32)1)		//ADC1_IN2 //battery voltage
 #define ADC2_CH 	((u32)2)		//ADC1_IN3
 #define ADC3_CH 	((u32)3)		//ADC1_IN4
 #define ADC4_CH 	((u32)4)		//ADC2_IN1
@@ -13,7 +13,7 @@
 #define ADC7_CH 	((u32)7)		//ADC2_IN4
 
 #define ADC8_CH 	((u32)8)		//ADC3_IN13
-
+#define ADCREF_CH    ((u32)9)        //ADC1_IN18 internal reference*/
 void adc_init()
 {
 	
@@ -53,7 +53,8 @@ void adc_init()
     //ADC_Init(ADC2, &ADC_InitStructure);
     //ADC_Init(ADC3, &ADC_InitStructure);
 
-    ADC_RegularChannelConfig(ADC1, ADC_Channel_2, 1,  ADC_SampleTime_1Cycles5);
+    //ADC_RegularChannelConfig(ADC1, ADC_Channel_2, 1,  ADC_SampleTime_1Cycles5);
+    ADC_RegularChannelConfig(ADC1, ADC_Channel_2, 1,  ADC_SampleTime_19Cycles5);
     //ADC_RegularChannelConfig(ADC1, ADC_Channel_1, 1,  ADC_SampleTime_1Cycles5);
     //ADC_RegularChannelConfig(ADC2, ADC_Channel_1, 1,  ADC_SampleTime_1Cycles5);
     //ADC_RegularChannelConfig(ADC3, ADC_Channel_13, 1,  ADC_SampleTime_1Cycles5);
@@ -62,7 +63,7 @@ void adc_init()
     ADC_Cmd(ADC1, ENABLE);
     //ADC_Cmd(ADC2, ENABLE);
     //ADC_Cmd(ADC3, ENABLE);
-		
+    ADC_StartCalibration(ADC1);
 }
 
 
@@ -121,7 +122,10 @@ u16 adc_read(u32 ch)
                         ADCx = ADC3;
                         ADC_Channel = ADC_Channel_12;
                         break;
-
+        case ADCREF_CH:
+                        ADCx = ADC1;
+                        ADC_Channel = ADC_Channel_18;
+                        break;
 
         default:
                         ADCx = ADC1;
@@ -131,10 +135,12 @@ u16 adc_read(u32 ch)
 
 
 
-    ADC_RegularChannelConfig( ADCx, ADC_Channel, 1, ADC_SampleTime_1Cycles5);
+    ADC_RegularChannelConfig( ADCx, ADC_Channel, 1, ADC_SampleTime_19Cycles5);
     //ADC_SampleTime_7Cycles5 );
 	// ADC_RegularChannelConfig( ADCx, ADC_Channel_13, 1, ADC_SampleTime_3Cycles);
 	//Start ADCx Software Conversion
+    ADC_StartCalibration(ADCx);
+    
 
 	ADC_StartConversion(ADCx);
 	// Wait until conversion completion

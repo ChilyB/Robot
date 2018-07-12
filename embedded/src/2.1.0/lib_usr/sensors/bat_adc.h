@@ -4,7 +4,7 @@
 #include "../lib_usr.h"
 
 uint32_t getBatteryVoltage();
-    
+uint32_t getMainVoltage();
 
 
 

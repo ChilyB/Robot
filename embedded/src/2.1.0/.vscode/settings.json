@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "lib_low_level.h": "c"
+        "lib_low_level.h": "c",
+        "adc.h": "c"
     }
 }

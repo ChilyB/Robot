@@ -53,7 +53,9 @@ void main_thread()
 		
 		//line_follower_test(LINE_RED);
 		//charging_wifi_test();
-		line_follower_with_charging(LINE_RED, LINE_RED,5000,4200,5000);
+		
+		
+		line_follower_with_charging(LINE_GREEN, LINE_RED,3600,4100,4900);
 		/*charging_test_go_straight_until_line(LINE_RED);
 		if(g_rgb.r[3] > RGB_RED_LINE_TRESHOLD){
 			//line_up_to_color(LINE_RED);
@@ -69,8 +71,10 @@ void main_thread()
 		//line_follower_test(LINE_GREEN);
 		//line_follower_test(LINE_BLUE);
 		//your code here
+		led_on(LED_0);
 		while (get_key() == 0)
 		{
+			
 			rgb_get_line_position();
 		}
 

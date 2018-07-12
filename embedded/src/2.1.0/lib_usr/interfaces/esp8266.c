@@ -160,7 +160,7 @@ i32 charging_send_message(char *ip, u32 port, char *tx_buffer, u32 tx_buffer_len
 		esp8266_send_uint(port);
 		esp8266_send((char*)"\r\n");
 
-		if (esp8266_find_stream((char*)"CONNECT", 7, 900) == 0)
+		if (esp8266_find_stream((char*)"CONNECT", 7, 10000) == 0)
 		{
 			esp8266_state = ST_NO_CONNECTED;
 			return ESP8266_SERVER_CONNECTING_ERROR;
@@ -177,7 +177,9 @@ i32 charging_send_message(char *ip, u32 port, char *tx_buffer, u32 tx_buffer_len
 	if (esp8266_find_stream((char*)">", 1, 10000) == 0)
 	{
 		esp8266_send((char*)"AT+CIPCLOSE\r\n");
-		timer_delay_ms(100);
+		timer_delay_ms(500);
+		esp8266_send((char*)"AT+CIPCLOSE\r\n");
+		timer_delay_ms(500);
 		esp8266_state = ST_NO_CONNECTED;
 		return ESP8266_SERVER_CONNECTING_ERROR2;
 	}
@@ -189,30 +191,39 @@ i32 charging_send_message(char *ip, u32 port, char *tx_buffer, u32 tx_buffer_len
 	if (esp8266_find_stream((char*)"SEND OK", 7, 10000) == 0)
 	{
 		esp8266_send((char*)"AT+CIPCLOSE\r\n");
-		timer_delay_ms(100);
+		timer_delay_ms(500);
+		esp8266_send((char*)"AT+CIPCLOSE\r\n");
+		timer_delay_ms(500);
 		esp8266_state = ST_NO_CONNECTED;
 		return ESP8266_SERVER_SENDING_ERROR;
 	}
+	//esp8266_send((char*)"po send ok\r\n");
 
-	if (esp8266_find_stream((char*)"+IPD,", 5, 10000) == 0)
+	if (esp8266_find_stream((char*)"+IPD,1:", 7, 10000) == 0)
 	{
 		esp8266_send((char*)"AT+CIPCLOSE\r\n");
-		timer_delay_ms(100);
+		timer_delay_ms(500);
+		esp8266_send((char*)"AT+CIPCLOSE\r\n");
+		timer_delay_ms(500);
 		esp8266_state = ST_NO_CONNECTED;
 		return ESP8266_SERVER_RESPONSE_ERROR;
 	}
 
 	u32 count = 0;
-	char c = 0;
-	while ((c = uart_read()) != ':')
-		count = 10*count + (c - '0');
+	/*char c = 0;
+	while (uart_read() != ':')
+	{
+
+	}*/
+		//count = 10*count + (c - '0');
 
 	esp8266_get_nonblocking(rx_buffer, rx_buffer_length, 10);
 
+
 	esp8266_send((char*)"AT+CIPCLOSE\r\n");
-	timer_delay_ms(100);
+	timer_delay_ms(500);
 	esp8266_send((char*)"AT+CIPCLOSE\r\n");
-	timer_delay_ms(100);
+	timer_delay_ms(500);
 	esp8266_state = ST_NO_CONNECTED;
 	return (count);
 
